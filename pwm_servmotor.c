@@ -33,19 +33,30 @@ da iluminação do referido LED? (15% da nota)  */
 
 #define SERVO_PIN 22
 #define RGB_LED_PIN 12
+#define SYSTEM_CLOCK 125000000
 #define PWM_FREQ 50
-#define CLOCK_DIV 64
-#define WRAP_VALUE 62500
+#define CLOCK_DIV 100
+#define WRAP_VALUE (SYSTEM_CLOCK / (PWM_FREQ * CLOCK_DIV))
 
-// Função para definir a posição do servo usando microssegundos
+#define POS_180 2400
+#define POS_90 1470
+#define POS_0 500
+
 void set_servo_us(uint slice_num, uint chan, uint us) {
-    uint16_t level = (us * (WRAP_VALUE / 20000));  // Converter microssegundos para nível PWM
+    uint16_t level = (us * WRAP_VALUE) / 20000;
     pwm_set_chan_level(slice_num, chan, level);
+}
+
+// Função do Blink
+void blink_led() {
+    gpio_put(RGB_LED_PIN, 1);
+    sleep_ms(500);
+    gpio_put(RGB_LED_PIN, 0);
+    sleep_ms(500);
 }
 
 void smooth_servo_movement(uint slice_num, uint chan, uint start_us, uint end_us) {
     int step = (start_us < end_us) ? 5 : -5;
-    
     for (uint pos = start_us; 
          (step > 0) ? pos <= end_us : pos >= end_us; 
          pos += step) {
@@ -57,44 +68,39 @@ void smooth_servo_movement(uint slice_num, uint chan, uint start_us, uint end_us
 int main() {
     stdio_init_all();
     
-    // Inicializar PWM para servo
     gpio_set_function(SERVO_PIN, GPIO_FUNC_PWM);
     uint slice_num = pwm_gpio_to_slice_num(SERVO_PIN);
     uint chan = pwm_gpio_to_channel(SERVO_PIN);
     
-    // Configurar PWM
     pwm_config config = pwm_get_default_config();
     pwm_config_set_clkdiv(&config, CLOCK_DIV);
     pwm_config_set_wrap(&config, WRAP_VALUE);
     pwm_init(slice_num, &config, true);
     
-    // Inicialização LED RGB
     gpio_init(RGB_LED_PIN);
     gpio_set_dir(RGB_LED_PIN, GPIO_OUT);
     
     while (true) {
-        // 180 graus - 2400µs
-        set_servo_us(slice_num, chan, 2400);
-        sleep_ms(5000);
-        
-        // 90 graus - 1470µs
-        set_servo_us(slice_num, chan, 1470);
-        sleep_ms(5000);
-        
-        // 0 graus - 500µs
-        set_servo_us(slice_num, chan, 500);
-        sleep_ms(5000);
-        
-        // Movimento suave de 0 a 180 graus e vice-versa
-        smooth_servo_movement(slice_num, chan, 500, 2400);  // 0° a 180°
-        sleep_ms(1000);
-        smooth_servo_movement(slice_num, chan, 2400, 500);  // 180° a 0°
-        sleep_ms(1000);
-        
-        // Alternar LED RGB
+        // 180 graus - LED continuamente aceso
+        set_servo_us(slice_num, chan, POS_180);
         gpio_put(RGB_LED_PIN, 1);
-        sleep_ms(500);
-        gpio_put(RGB_LED_PIN, 0);
-        sleep_ms(500);
+        sleep_ms(5000);
+        
+        // 90 graus - LED piscando
+        set_servo_us(slice_num, chan, POS_90);
+        for(int i = 0; i < 5; i++) {
+            blink_led();
+        }
+        
+        // 0 graus - LED continuamente aceso
+        set_servo_us(slice_num, chan, POS_0);
+        gpio_put(RGB_LED_PIN, 1);
+        sleep_ms(5000);
+        
+        // Movimentos suaves
+        smooth_servo_movement(slice_num, chan, POS_0, POS_180);
+        sleep_ms(1000);
+        smooth_servo_movement(slice_num, chan, POS_180, POS_0);
+        sleep_ms(1000);
     }
 }
