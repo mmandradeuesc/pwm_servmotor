@@ -42,6 +42,8 @@ da iluminação do referido LED? (15% da nota)  */
 #define POS_90 1470
 #define POS_0 500
 
+
+// Função para definir o ciclo ativo do PWM
 void set_servo_us(uint slice_num, uint chan, uint us) {
     uint16_t level = (us * WRAP_VALUE) / 20000;
     pwm_set_chan_level(slice_num, chan, level);
@@ -55,6 +57,7 @@ void blink_led() {
     sleep_ms(500);
 }
 
+// Função para movimentação suave do servomotor
 void smooth_servo_movement(uint slice_num, uint chan, uint start_us, uint end_us) {
     int step = (start_us < end_us) ? 5 : -5;
     for (uint pos = start_us; 
@@ -65,21 +68,27 @@ void smooth_servo_movement(uint slice_num, uint chan, uint start_us, uint end_us
     }
 }
 
+// Função principal
 int main() {
     stdio_init_all();
     
+    // Configurando o PWM do Servo
     gpio_set_function(SERVO_PIN, GPIO_FUNC_PWM);
     uint slice_num = pwm_gpio_to_slice_num(SERVO_PIN);
     uint chan = pwm_gpio_to_channel(SERVO_PIN);
     
+    // Configurando o PWM
     pwm_config config = pwm_get_default_config();
     pwm_config_set_clkdiv(&config, CLOCK_DIV);
     pwm_config_set_wrap(&config, WRAP_VALUE);
     pwm_init(slice_num, &config, true);
     
+    // Configurando o LED RGB
     gpio_init(RGB_LED_PIN);
     gpio_set_dir(RGB_LED_PIN, GPIO_OUT);
+
     
+    // Inicialização do PWM
     while (true) {
         // 180 graus - LED continuamente aceso
         set_servo_us(slice_num, chan, POS_180);
