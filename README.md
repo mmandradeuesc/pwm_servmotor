@@ -14,8 +14,8 @@ Certifique-se de que você tem o ambiente configurado conforme abaixo:
 ### Instruções de Configuração
 1. Clone o repositório e abra a pasta do projeto no VSCode.
    ```sh
-   git clone <URL-do-repositório>
-   cd <nome-da-pasta-do-projeto>
+   git clone https://github.com/mmandradeuesc/pwm_servmotor
+   cd pwm_servmotor
    code .
 
 ### Manual do Programa
@@ -70,4 +70,4 @@ Intensidade consistente durante estados estáticos
 Variação de intensidade durante movimentos dinâmicos
  
 - Link do vídeo demonstração do programa:
-- 
+- https://drive.google.com/file/d/1x_K7VEitM5nYz3jrwK-gogZ9zSJDMMZA/view?usp=sharing
