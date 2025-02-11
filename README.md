@@ -117,4 +117,4 @@ Pulsação indica movimento em progresso
 Intensidade do LED correlaciona com a posição angular do servo
  
 - Link do vídeo demonstração do programa:
-- https://drive.google.com/file/d/1x_K7VEitM5nYz3jrwK-gogZ9zSJDMMZA/view?usp=sharing
+- https://drive.google.com/file/d/1AxvOeXxum08IZLNa79QtE43ockWTFbDh/view?usp=sharing
