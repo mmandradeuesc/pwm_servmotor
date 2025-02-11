@@ -96,7 +96,7 @@ Variação: Incrementos de 2% no brilho
 Estado: Pulsação contínua (fade in/out)
 Propósito: Indica movimento em progresso
 
-Características Técnicas:
+### Características Técnicas:
 
 - Estados Fixos
 
