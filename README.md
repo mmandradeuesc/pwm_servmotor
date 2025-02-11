@@ -51,23 +51,70 @@ Padrões de Iluminação Observados
 
 Durante Posições Fixas (5 segundos cada):
 
-- 180° (2400µs): LED permanece aceso continuamente
-- 90° (1470µs): LED pisca em intervalos regulares
-- 0° (500µs): LED permanece aceso continuamente
+- 180° (2400µs): Posição 180 Graus
+
+Servo: 
+Duty Cycle: 12% (2400µs)
+Posição: Rotação máxima (180°)
+
+LED:
+Brilho: 100% (máximo)
+Estado: Luz constante e forte
+Propósito: Indica posição máxima do servo
+
+- 90° (1470µs): Posição 90º 
+Servo:
+Duty Cycle: 7.35% (1470µs)
+Posição: Rotação média (90°)
+
+LED:
+Brilho: 50% (médio)
+Estado: Luz constante e média
+Propósito: Indica posição intermediária do servo
+
+- 0° (500µs): Posição 0º
+
+Servo:
+Duty Cycle: 2.5% (500µs)
+Posição: Rotação mínima (0°)
+
+LED:
+Brilho: 10% (mínimo)
+Estado: Luz constante e fraca
+Propósito: Indica posição mínima do servo
 
 
-Durante Movimento Suave:
+- Durante Movimento Suave:
 
-- Transição 0° → 180°: LED exibe padrão de pulsação gradual, aumentando intensidade
-- Transição 180° → 0°: LED exibe padrão de pulsação gradual, diminuindo intensidade
+Servo:
+Variação: Incrementos de 5µs
+Tempo entre incrementos: 10ms
+Movimento: Contínuo entre 0° e 180°
 
+LED:
+Variação: Incrementos de 2% no brilho
+Estado: Pulsação contínua (fade in/out)
+Propósito: Indica movimento em progresso
 
 Características Técnicas:
 
-Frequência de piscada: 1Hz (500ms ligado, 500ms desligado)
-Sincronização com PWM do servo: LED pisca em fase com mudanças de posição
-Intensidade consistente durante estados estáticos
-Variação de intensidade durante movimentos dinâmicos
+- Estados Fixos
+
+Brilho máximo → Servo em 180°
+Brilho médio → Servo em 90°
+Brilho mínimo → Servo em 0°
+
+- Estados Dinâmicos
+
+Pulsação do LED indica movimento do servo
+Quanto mais rápida a pulsação, mais rápido o movimento
+
+- Propósito do Sistema
+O sistema fornece feedback visual do posicionamento do servo através do LED:
+
+Estados fixos indicam posições específicas
+Pulsação indica movimento em progresso
+Intensidade do LED correlaciona com a posição angular do servo
  
 - Link do vídeo demonstração do programa:
 - https://drive.google.com/file/d/1x_K7VEitM5nYz3jrwK-gogZ9zSJDMMZA/view?usp=sharing
